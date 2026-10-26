@@ -1,99 +1,135 @@
 # KiCAD Codesign
 
-A Windows desktop companion for asking an LLM to edit a visible KiCad design. Circle a region over the actual editor, describe the change, and follow the assistant's proposed mouse and keyboard actions in KiCad.
+**Circle a region. Describe the change. Review it in KiCad.**
 
-**Status: early prototype.** The native interface and provider adapters are implemented. Automated tests cover the action protocol, provider request/response formats, a local mock endpoint, and view-change checks. Full live editing with OpenAI or Claude has not yet been verified. Start with the included practice designs.
+A Windows desktop companion that connects your visible KiCad editor to OpenAI, Claude, or a compatible model. Keep the design beside the assistant, review its next action, and watch changes happen in the native editor.
 
-## What it does
+| Describe your change | Review the next action |
+| --- | --- |
+| <img src="docs/images/workspace.png" alt="Codesign workspace with the practice board selected and a request to change R1 to 10k" width="360"> | <img src="docs/images/action-review.png" alt="An example proposed action, its explanation, and the Stop and Apply action buttons" width="360"> |
 
-- Select a running **PCB layout, schematic, or footprint editor** window.
-- Draw one or more freehand regions over a frozen snapshot aligned with the editor.
-- Send your instruction, circled reference, and current editor image to **OpenAI**, **Claude**, or an **OpenAI-compatible** endpoint.
-- Review and apply one action at a time, or enable automatic continuation with a 40-action limit.
-- Watch each action in the real KiCad editor, with a fresh screenshot after each action and a local action log.
-- Stop pending work and use KiCad's native Undo.
+*Screenshots show the real native interface rendered on an isolated Windows desktop. They use an export of the included practice board and scripted example states. The action-review example is not a live model response.*
 
-This version controls KiCad through Windows screenshots and mouse/keyboard input. It does not use KiCad's PCB IPC API or parse the live electrical design into objects. The three editor types use the same visual-control adapter; complete workflows in all three still need validation. It is not an embedded KiCad panel or a continuous video stream.
+**Early prototype.** The interface, provider adapters, and input checks are implemented. The 44 automated tests pass, including native layout and selection checks. Full live editing with OpenAI or Claude has not yet been verified; start with the practice project.
+
+## What you can do
+
+- Choose a **PCB layout, schematic, or footprint editor**.
+- Draw one or more regions over a frozen view of that editor, or select the entire view with the keyboard.
+- Describe a specific change and review each proposed action before applying it.
+- Keep **Stop** and **Apply action** visible while the design controls scroll.
+- Follow explanations in **Activity**, inspect before/after screenshots in local history, and use KiCad's native Undo.
+- Switch between OpenAI, Claude, and compatible endpoints; each connection keeps its own draft settings for the session.
+
+Codesign uses Windows screenshots and mouse/keyboard input. It does not embed KiCad, use the PCB IPC API, or read the electrical design as structured objects. The three editor types share a visual-control adapter; complete workflows in all three still need validation.
 
 ## Start on Windows
 
-1. Install KiCad 10 under its normal `Program Files\KiCad` location. The app uses KiCad's bundled Python, wxPython, and Pillow.
-2. Download this repository as a ZIP and extract it, or clone it.
-3. Double-click **`Start KiCAD Codesign.cmd`**.
-4. Open a design in KiCad. In Codesign, press **Refresh** and select the editor you want to work in.
-5. Choose **Connection…**, select your provider, enter an API key and a vision-capable model ID, then press **OK**.
+1. Install KiCad 10 in its usual `Program Files\KiCad` location. Codesign uses its bundled Python, wxPython, and Pillow.
+2. Clone this repository, or download and extract its ZIP.
+3. Double-click **Start KiCAD Codesign.cmd**.
+4. Open a design in KiCad. In Codesign, choose **Refresh**, then select the intended editor.
+5. Open **Connection…**, choose a provider, enter your model ID and API key, then choose **Save connection**.
 
-The defaults are `gpt-5.4` for OpenAI and `claude-sonnet-4-6` for Claude. Model IDs are editable. You need API access for the selected provider; this app does not connect through the ChatGPT or Claude desktop subscription.
-
-If you use a separate Python installation, install Python 3.11 or newer and run:
+For a separate Python installation, use Python 3.11 or newer:
 
 ```powershell
 python -m pip install -r requirements.txt
 python launch.py
 ```
 
-The desktop adapter currently requires Windows. Linux and macOS are not implemented.
+The desktop adapter currently supports Windows only.
 
-## Circle, explain, and edit
+## Circle, explain, and review
 
-1. Press **Arrange side by side** to place KiCad beside the companion.
-2. Press **Circle in KiCad** or **Ctrl+Shift+Space**. Draw around the target. Press **Enter** to keep the region, **Backspace** to clear it, or **Esc** to cancel.
-3. Describe the desired change. For example: “Set the circled resistor's value to 10k. Leave its position unchanged.”
-4. Press **Ask / Start**. Review the explanation and proposed action, then press **Apply next action**. Each applied action is followed by another model inspection.
-5. Optionally enable **Continue automatically**. There is a 1.2-second preview before each automatically applied action.
-6. Inspect the result and save it yourself in KiCad. **Undo in KiCad** sends one native undo, not a rollback of the whole task.
+1. Choose **Arrange windows** to place the editor and assistant side by side. On smaller displays, arrange them manually or use separate monitors.
+2. Choose **Circle region** and draw around the target. Choose **Use selection** or press **Enter**. **Clear** starts the selection again; **Cancel** returns to the assistant. **Entire view** selects without drawing.
+3. Describe the change, for example: “Set the circled resistor R1 to 10k. Keep its position unchanged.”
+4. Choose **Ask assistant**. Read the proposed action and explanation, then choose **Apply action**. The assistant inspects a fresh image after each applied action.
+5. Inspect the result in KiCad and save it there. **Undo** sends one native undo; it does not roll back the entire request.
 
-Use **Stop**, **Ctrl+Shift+F12**, or hold **Esc** to stop. A request already sent to an LLM may finish at the provider, but its response is ignored after Stop. Mouse/keyboard actions already applied remain in KiCad. A global shortcut can be unavailable if another app has registered it; the buttons remain available.
+**Apply actions automatically** is off by default. When enabled, each proposed action has a 1.2-second preview before it runs. Turn it off to return to individual review. Each request is limited to 40 actions.
 
-Choose a different editor from the dropdown to work in another view. Switching editors clears the selection. For footprint editing, first open KiCad's Footprint Editor, load the desired footprint, and press Refresh in Codesign.
+**Stop** discards pending decisions and ignores later responses. A request already sent may finish at the provider, and changes already applied remain in KiCad. A short input action can finish before the Stop button is processed; hold **Esc** for the input adapter's emergency check.
 
-## Practice project
+### Keyboard shortcuts
 
-**Open demo** opens either `demo/Codesign-Practice.kicad_pcb` or `demo/Codesign-Practice.kicad_sch`. Both contain standalone R1, R2, and C1 practice objects. These documents are not a routed or electrically complete circuit. Finish any KiCad startup dialogs, then select the practice editor from the dropdown.
+| Action | Shortcut |
+| --- | --- |
+| Circle a region | Ctrl+Shift+Space |
+| Ask or apply the proposed action | Ctrl+Enter |
+| Stop | Ctrl+Shift+F12, or hold Esc |
+| Connection | Ctrl+, |
+| Keep the selection | Enter, in the selection overlay |
+| Clear the selection | Backspace or Delete, in the overlay |
+| Cancel selection | Esc, in the overlay |
+| Select without drawing | Tab to Entire view, then Space |
 
-## Connections and local data
+Global shortcuts can be unavailable if another app has registered them. The interface buttons remain available. **Help → Keyboard shortcuts** lists the controls in the app.
 
-- OpenAI uses the Responses API; Claude uses the Messages API.
-- API keys are held in memory until the app closes. You can also set `OPENAI_API_KEY`, `ANTHROPIC_API_KEY`, or `LLM_API_KEY` in your environment. Environment-provided credentials are managed by your environment, not saved by this app.
-- Pressing Ask sends the circled reference image, current selected editor/dialog image, prompt, and action history to the chosen provider. The image may contain the whole selected editor window, not just the circle.
-- Local history is saved under `sessions/`, including prompts, model summaries, and before/after screenshots. **History folder** opens that directory. It is excluded from Git.
-- Remote compatible endpoints require HTTPS. HTTP is permitted only for localhost. Compatible models must support both image inputs and function calling.
+### Try the practice project
 
-## Current limitations
+Choose **File → Open practice design…** for the included PCB layout or schematic. Both contain standalone R1, R2, and C1 objects; they are not a routed or electrically complete circuit. Finish any KiCad startup dialogs, then choose **Refresh** and select the practice editor.
 
-- Visual automation can misidentify objects. Exact values should be entered through KiCad property fields. A completed model response is not ERC, DRC, or electrical-design verification.
-- Keep the selected editor visible and avoid changing it during a run. The app checks window identity, geometry, and material image changes before input; this is a heuristic and cannot detect every small change.
-- Text entry requires a recognized, focused Windows text control. Custom widgets, unfamiliar dialogs, localized window titles, or custom KiCad shortcuts may need manual intervention.
-- Model actions are restricted to a small validated input vocabulary, and input is scoped to the selected KiCad window and owned dialogs. This is a guardrail, not a complete security boundary against every operation available through KiCad's UI.
-- Saving, opening documents, and changing preferences are intended to remain user-controlled. Files are not automatically backed up by this app; screenshots are interaction records, not restorable design backups.
+For footprint work, open KiCad's Footprint Editor, load a footprint, and choose **Refresh** in Codesign. Switching editors clears the previous selection.
+
+## Connect your model
+
+<img src="docs/images/connection.png" alt="Connection dialog with provider, model, and masked API-key fields" width="460">
+
+| Provider | Connection | Default model in this version |
+| --- | --- | --- |
+| OpenAI | Responses API | `gpt-5.4` |
+| Claude | Messages API | `claude-sonnet-4-6` |
+| OpenAI-compatible | Your endpoint | Enter your model ID |
+
+Model IDs are editable. The model must support images and function calling. You need API access for the provider; Codesign does not connect through a ChatGPT or Claude desktop subscription. Remote compatible endpoints require HTTPS; HTTP is allowed only for localhost.
+
+## Your data
+
+- API keys stay in memory until Codesign closes. You can also supply `OPENAI_API_KEY`, `ANTHROPIC_API_KEY`, or `LLM_API_KEY` through your environment. Codesign does not save those credentials to disk.
+- **Ask assistant** sends the annotated reference, current editor or dialog image, prompt, and action history to your chosen provider. Images can include the whole selected editor window, beyond the circled region.
+- Local history lives in `sessions/`: prompts, summaries, and before/after screenshots. Open it from **Activity → Open history folder** or **Help → Open session history**. This folder is excluded from Git.
+- Saving documents and managing backups remain your responsibility. Interaction screenshots are not restorable design backups.
+
+## Current limits
+
+- Actual editing uses foreground mouse and keyboard input. Keep the selected editor visible and avoid changing it while a request runs. Background screenshot generation for this README does not imply background KiCad editing.
+- Visual automation can misidentify objects. Enter exact values through KiCad property fields and independently verify the result. A completed model response is not ERC, DRC, or electrical-design verification.
+- Window identity, geometry, and image-change checks reduce stale input, but cannot detect every small change.
+- Text entry needs a recognized, focused Windows text control. Custom widgets, localized window titles, unfamiliar dialogs, or custom shortcuts may require manual intervention.
+- Model input is limited to a validated action vocabulary and the selected editor's windows. These checks are not a complete security boundary against every operation available in KiCad.
 - Running KiCad and Codesign at different Windows privilege levels can block input.
 
-## Development
+## Development and verification
 
-```text
-launch.py                 Desktop entry point
-kicad_codesign/app.py      Interface, selection overlay, and action loop
-kicad_codesign/desktop.py  Windows capture, window scoping, and input adapter
-kicad_codesign/protocol.py Validated provider-independent decision format
-kicad_codesign/providers.py OpenAI, Claude, and compatible API connectors
-tests/test_core.py        Protocol, provider, and screenshot-validation tests
-```
+| Location | Responsibility |
+| --- | --- |
+| `kicad_codesign/app.py` | Request loop, state transitions, cancellation, and history |
+| `kicad_codesign/layout.py` | Main layout and native menus |
+| `kicad_codesign/dialogs.py` | Region selection and provider connection |
+| `kicad_codesign/ui.py` | Typography, colors, cards, preview, and wrapped text |
+| `kicad_codesign/presentation.py` | Readiness, sizing, and validation rules |
+| `kicad_codesign/desktop.py` | Windows capture, window scoping, and input |
+| `kicad_codesign/protocol.py` | Provider-independent action validation |
+| `kicad_codesign/providers.py` | OpenAI, Claude, and compatible connectors |
 
-From the repository root, run the tests with KiCad's Python:
+Run the full suite without putting test windows on your working desktop:
 
 ```powershell
-& "C:\Program Files\KiCad\10.0\bin\python.exe" -m unittest discover -s tests -v
+& "C:\Program Files\KiCad\10.0\bin\python.exe" tools\run_tests.py
 ```
 
-The 26 tests do not require an API key. One test starts a temporary localhost-only HTTP server. Tests import the Windows desktop adapter and therefore require Windows and Pillow.
+The 44 tests cover protocol validation, provider formats, a localhost mock endpoint, stale-view checks, text contrast, compact layouts, connection validation, selection callbacks, and cancellation. They need no API key. The Windows test runner creates a temporary noninteractive desktop and never switches to it.
 
-To add a provider, implement `build_request(connection, context, images)` and `decode_response(body)` in a provider class, provide `default_url`, `default_model`, and `env_key`, then register it in `PROVIDERS`. Return a validated `Decision` through `parse_decision`; provider code must not execute model-generated code.
+To regenerate the native interface screenshots, with no desktop input or provider calls:
 
-## References
+```powershell
+& "C:\Program Files\KiCad\10.0\bin\python.exe" tools\capture_interface.py
+```
 
-- [KiCad IPC API coverage](https://dev-docs.kicad.org/en/apis-and-binding/ipc-api/for-addon-developers/)
-- [OpenAI image inputs](https://developers.openai.com/api/docs/guides/images-vision)
-- [Claude vision](https://platform.claude.com/docs/en/build-with-claude/vision)
-- [Claude tool use](https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview)
+Public examples go to `docs/images/`; additional visual checks go to the ignored `build/interface-review/` directory. See [the interface review](docs/interface-review.md) for coverage and remaining limits.
 
-KiCAD Codesign is an independent project, not an official KiCad, OpenAI, or Anthropic product. See [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) for practice-design library attribution.
+To add a provider, implement `build_request(connection, context, images)` and `decode_response(body)`, supply `default_url`, `default_model`, and `env_key`, and register the class in `PROVIDERS`. Return a validated `Decision` through `parse_decision`; provider code must not execute model-generated code.
+
+KiCAD Codesign is an independent project, not an official KiCad, OpenAI, or Anthropic product. See [third-party notices](THIRD_PARTY_NOTICES.md) for practice-design library attribution.

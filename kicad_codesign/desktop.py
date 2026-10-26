@@ -7,6 +7,7 @@ import time
 import io
 from PIL import ImageGrab, ImageChops, ImageDraw
 from .protocol import validate_key
+from .presentation import arrangement_widths
 
 U = C.WinDLL("user32", use_last_error=True)
 K = C.WinDLL("kernel32", use_last_error=True)
@@ -143,7 +144,7 @@ def ensure_visible(editor, rect):
         for iy in (.09, .3, .5, .7, .92):
             h = U.WindowFromPoint(W.POINT(int(left+(right-left)*ix), int(top+(bottom-top)*iy)))
             if not belongs(h, editor) and not (pid_of(h) == editor.pid and classname(h) == "#32768"):
-                raise DesktopError("Another window covers KiCad. Use Arrange side by side, then retry.")
+                raise DesktopError("Another window covers KiCad. Use Arrange windows, then retry.")
 
 @dataclass
 class Snapshot:
@@ -274,7 +275,10 @@ def arrange(editor, companion_hwnd):
     r=info.rcWork; width=r.right-r.left; height=r.bottom-r.top
     signature(U,"GetDpiForWindow",W.UINT,W.HWND)
     scale=(U.GetDpiForWindow(companion_hwnd) or 96)/96
-    panel=min(round(500*scale), max(round(455*scale), int(width*.3)))
+    widths=arrangement_widths(width, scale)
+    if widths is None:
+        raise DesktopError("This display is too narrow for two usable windows. Place KiCad and Codesign on separate displays, or arrange them manually.")
+    editor_width, panel=widths
     U.ShowWindow(editor.hwnd,9)
-    U.SetWindowPos(editor.hwnd,None,r.left,r.top,width-panel,height,0x0014)
+    U.SetWindowPos(editor.hwnd,None,r.left,r.top,editor_width,height,0x0014)
     U.SetWindowPos(companion_hwnd,None,r.right-panel,r.top,panel,height,0x0014)
