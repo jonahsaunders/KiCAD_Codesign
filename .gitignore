@@ -1,0 +1,37 @@
+# Credentials and local configuration
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Local interaction history contains design screenshots and prompts.
+sessions/
+*.log
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+
+# KiCad local state and backups
+*.kicad_prl
+*.lck
+*.bak
+*.bck
+*.kicad_pcb-bak
+*.kicad_sch-bak
+*-backups/
+_autosave-*
+~*
+
+# Packaging and editor files
+build/
+dist/
+*.egg-info/
+.idea/
+.vscode/
+Thumbs.db
+.DS_Store

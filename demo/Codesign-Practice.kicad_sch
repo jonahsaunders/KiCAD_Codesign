@@ -1,0 +1,317 @@
+(kicad_sch (version 20250114) (generator "eeschema") (uuid "67853123-9acd-4ed5-acb1-4db2d86ec322") (paper "A4")
+(lib_symbols (symbol "Device:R"
+		(pin_numbers
+			(hide yes)
+		)
+		(pin_names
+			(offset 0)
+		)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(duplicate_pin_numbers_are_jumpers no)
+		(property "Reference" "R"
+			(at 2.032 0 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "R"
+			(at 0 0 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at -1.778 0 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Resistor"
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "ki_keywords" "R res resistor"
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "ki_fp_filters" "R_*"
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(symbol "R_0_1"
+			(rectangle
+				(start -1.016 -2.54)
+				(end 1.016 2.54)
+				(stroke
+					(width 0.254)
+					(type default)
+				)
+				(fill
+					(type none)
+				)
+			)
+		)
+		(symbol "R_1_1"
+			(pin passive line
+				(at 0 3.81 270)
+				(length 1.27)
+				(name ""
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "1"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin passive line
+				(at 0 -3.81 90)
+				(length 1.27)
+				(name ""
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "2"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+		)
+		(embedded_fonts no)
+	)
+(symbol "Device:C"
+		(pin_numbers
+			(hide yes)
+		)
+		(pin_names
+			(offset 0.254)
+		)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(duplicate_pin_numbers_are_jumpers no)
+		(property "Reference" "C"
+			(at 0.635 2.54 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "C"
+			(at 0.635 -2.54 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" ""
+			(at 0.9652 -3.81 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Unpolarized capacitor"
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "ki_keywords" "cap capacitor"
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "ki_fp_filters" "C_*"
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(symbol "C_0_1"
+			(polyline
+				(pts
+					(xy -2.032 0.762) (xy 2.032 0.762)
+				)
+				(stroke
+					(width 0.508)
+					(type default)
+				)
+				(fill
+					(type none)
+				)
+			)
+			(polyline
+				(pts
+					(xy -2.032 -0.762) (xy 2.032 -0.762)
+				)
+				(stroke
+					(width 0.508)
+					(type default)
+				)
+				(fill
+					(type none)
+				)
+			)
+		)
+		(symbol "C_1_1"
+			(pin passive line
+				(at 0 3.81 270)
+				(length 2.794)
+				(name ""
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "1"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin passive line
+				(at 0 -3.81 90)
+				(length 2.794)
+				(name ""
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "2"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+		)
+		(embedded_fonts no)
+	))
+(symbol (lib_id "Device:R") (at 100 90 0) (unit 1) (in_bom yes) (on_board yes) (dnp no) (uuid "d1db723b-b30b-46f0-b645-1e807bf66dd2")
+      (property "Reference" "R1" (at 104 89 0) (effects (font (size 1.27 1.27))))
+      (property "Value" "1k" (at 104 91.5 0) (effects (font (size 1.27 1.27))))
+      (property "Footprint" "Resistor_SMD:R_0805_2012Metric" (at 100 90 0) (effects (font (size 1.27 1.27)) (hide yes)))
+      (pin "1" (uuid "3c941d7f-4c77-4e55-a7b0-949030ca22e2")) (pin "2" (uuid "88da2a87-2e67-4d95-a12e-15ea18ab81e7"))
+      (instances (project "Codesign-Practice" (path "/67853123-9acd-4ed5-acb1-4db2d86ec322" (reference "R1") (unit 1)))))
+(symbol (lib_id "Device:R") (at 125 90 0) (unit 1) (in_bom yes) (on_board yes) (dnp no) (uuid "23517490-297a-4df9-b868-4faa39f64e73")
+      (property "Reference" "R2" (at 129 89 0) (effects (font (size 1.27 1.27))))
+      (property "Value" "4.7k" (at 129 91.5 0) (effects (font (size 1.27 1.27))))
+      (property "Footprint" "Resistor_SMD:R_0805_2012Metric" (at 125 90 0) (effects (font (size 1.27 1.27)) (hide yes)))
+      (pin "1" (uuid "39de24ec-e07b-4e23-89f2-d4e64e6966a8")) (pin "2" (uuid "37f22fee-dc2e-48c7-9341-fc3f785a5ea8"))
+      (instances (project "Codesign-Practice" (path "/67853123-9acd-4ed5-acb1-4db2d86ec322" (reference "R2") (unit 1)))))
+(symbol (lib_id "Device:C") (at 100 115 0) (unit 1) (in_bom yes) (on_board yes) (dnp no) (uuid "c02483b6-024a-4876-acf3-9b1e5fe2ffc0")
+      (property "Reference" "C1" (at 104 114 0) (effects (font (size 1.27 1.27))))
+      (property "Value" "100nF" (at 104 116.5 0) (effects (font (size 1.27 1.27))))
+      (property "Footprint" "Capacitor_SMD:C_0805_2012Metric" (at 100 115 0) (effects (font (size 1.27 1.27)) (hide yes)))
+      (pin "1" (uuid "2c11434c-71f6-4800-98fd-42ba5f0f7375")) (pin "2" (uuid "ece46166-f692-40f2-8685-013af9676b2d"))
+      (instances (project "Codesign-Practice" (path "/67853123-9acd-4ed5-acb1-4db2d86ec322" (reference "C1") (unit 1)))))
+(text "KiCAD Codesign / Practice design" (at 90 70 0) (effects (font (size 2 2)) (justify left)) (uuid "3cf31169-2f3e-4211-8904-21007e947602"))
+(text "Circle R1, then ask to change its value to 10k.\nStandalone practice objects; not a finished circuit." (at 90 76 0) (effects (font (size 1.27 1.27)) (justify left)) (uuid "234becb8-6a50-484b-b5df-5afe340415b4"))
+)
